@@ -15,7 +15,17 @@ An MQTT standard is just a way to format topics so that users and devices can un
 * Can integrate seamlessly with third party services (slack chat, text message, twitter, etc)
 
 
-### Location based topic rationale 
+Topic Format
+------------
+
+The topics are formatted in the following way:
+
+` /[location based path]/[command]/[device name]/[endpoint] `
+
+
+
+Location based topic rationale
+------------------------------
 
 The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
 
@@ -25,12 +35,35 @@ The intended use case for Clod is multiple espressif-based IoT devices throughou
 
 * A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parse whether a global command applies to it's location. Eventually, Clod scripts will allow you to send a message like ` /global/house/upstairs/control/lights "off" ` to turn off all the upstairs lights. 
 
-Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. They are descriptive, and they get more specific and limiting as you read from left to right.
+Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. First, they are descriptive and helpful to the user. Second, they get more specific and limiting as read from left to right. 
 
 
-### Commands, Name, and Endpoints
+Topic Format
+------------
 
-After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Everything to the left of the command is the `[path]`, 
+
+
+
+#### Commands
+
+After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Everything to the left of the command is the `[path]`. The first item to the right of the `[command]` is the device `[name]`. The second item to the right of the `[command]` is the `[endpoint]`.
+
+A `[path]/control/[name]/[endpoint]` message tells the device to do something.
+
+A `[path]/confirm/[name]/[endpoint]` message usually comes from the device and informs Clod that the control message has been carried out.
+
+When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod.
+
+`[path]/log/[name]` currently does nothing, but is reserved for future use.
+
+
+#### Names
+
+Device names
+
+
+#### Endpoints
+
 
 
 
