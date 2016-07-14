@@ -1,4 +1,33 @@
-# clod-MQTT-standard
+
+Clod MQTT Standard
+==================
+
+An MQTT standard is just a way to format topics so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. The Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
+
+* Intutive when viewed in a continuous output stream
+
+* Allow user customization
+
+* Able to be parsed by multiple programming languages
+
+* Easy for developers to grasp when developing new GUI or device sketches
+
+* Can integrate seamlessly with third party services (slack chat, text message, twitter, etc)
+
+
+
+
+### Location based path rationale 
+
+A previous version of this dashboard used a much simpler path structure, with Inbox (for controlling) or Outbox (for confirming) always as the first element of the path. Apart from creative uses of device names and endpoints, there was no way for a user to specify a path. User-defined, location-based paths offer some advantages:
+
+* A more intuitive experience when viewing a raw stream of messages on the broker. The path tells you the location and the command describes what is happening. The output gets more detailed as you read from left to right.
+
+* The ability to easily view a subset of your network. For example, a subscription to /house/upstairs/# will show you everything that is going on within upstairs including devices at /upstairs/guestroom and upstairs/bathroom.
+
+* A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parase whether a global command applies to it's location.
+
+
 
 Connecting to Crouton
 --------------
@@ -144,20 +173,3 @@ Therefore the value shown on Crouton more accurately reflects the value on the d
 Address: /[path]/confirm/[device name]/[endpoint name]
 Payload: {"value": "some new value here"}
 ```
-
-Advanced Topics
-===================
-
-### Single card devices
-
-If your device only contains one card, like a toggle or counter display, you can reprogram elements of the JSON from within the dashboard. On the connections page, select your card type from the menu and enter the device name, card title, path, and other optional information. This is useful for quickly moving a switch to another room. Rather than reprogramming the device to reflect the new path, name and other information, you can quickly adjust it from within the dashboard.
-
-### Location based path rationale 
-
-A previous version of this dashboard used a much simpler path structure, with Inbox (for controlling) or Outbox (for confirming) always as the first element of the path. Apart from creative uses of device names and endpoints, there was no way for a user to specify a path. User-defined, location-based paths offer some advantages:
-
-* A more intuitive experience when viewing a raw stream of messages on the broker. The path tells you the location and the command describes what is happening. The output gets more detailed as you read from left to right.
-
-* The ability to easily view a subset of your network. For example, a subscription to /house/upstairs/# will show you everything that is going on within upstairs including devices at /upstairs/guestroom and upstairs/bathroom.
-
-* A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parase whether a global command applies to it's location.
