@@ -18,13 +18,25 @@ An MQTT standard is just a way to format topics so that users and devices can un
 Topic Format
 ------------
 
-The topics are formatted in the following way:
+The Clod MQTT topic format is:
 
 ` /[location based path]/[command]/[device name]/[endpoint] `
 
+Examples:
+
+```
+[location based path] > /house/upstairs/guestroom 
+[command] > /control
+[device name] > /myEspDevice
+[endpoint] > /temperature
+```
+
+All together, that would look like this:
+
+` /house/upstairs/guestroom/control/myEspDevice/temperature `
 
 
-Location based topic rationale
+Location based path rationale
 ------------------------------
 
 The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
