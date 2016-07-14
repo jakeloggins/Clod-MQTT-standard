@@ -15,7 +15,6 @@ An MQTT standard is just a way to format topics so that users and devices can un
 * Can integrate seamlessly with third party services (slack chat, text message, twitter, etc)
 
 
-
 ### Location based path rationale 
 
 The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
@@ -26,23 +25,30 @@ The intended use case for Clod is multiple espressif-based IoT devices throughou
 
 * A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parse whether a global command applies to it's location. Eventually, Clod scripts will allow you to send a message like ` /global/house/upstairs/control/lights "off" ` to turn off all the upstairs lights. 
 
+Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/largest/medium/smallest ` are both perfectly fine location paths. 
 
 
-Connecting to Crouton
---------------
+
+### Commands
+
+
+### Scripts
+
+
+
 
 First, have Crouton and the device connected to the same MQTT Broker. The connection between the device and Crouton will be initiated from Crouton, therefore the device needs to subscribe to its own inbox.
 
 ```
 Device should subscribe to the following:
-/deviceInfo/[the device name]/control
+/deviceInfo/control/[the device name]
 ```
 
 Every time the device successfully connects to the MQTT Broker, it should publish its *deviceInfo*. This is needed for auto-reconnection. If Crouton is waiting for the device to connect, it will listen for the *deviceInfo* when the device comes back online.
 
 ```
 Device should publish deviceInfo JSON once connected
-/deviceInfo/[the device name]/confirm
+/deviceInfo/confirm/[the device name]/
 ```
 
 ### DeviceInfo
