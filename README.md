@@ -26,11 +26,8 @@ Examples:
 
 ```
 [location based path] > /house/upstairs/guestroom 
-
 [command] > /control
-
 [device name] > /myEspDevice
-
 [endpoint] > /temperature
 ```
 
@@ -41,7 +38,7 @@ All together, that would look like this:
 
 #### Location based path
 
-The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
+The intended use for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
 
 * A more intuitive experience when viewing a raw stream of messages on the broker. The path tells you the location and the command describes what is happening. The output gets more detailed as you read from left to right.
 
@@ -51,19 +48,20 @@ The intended use case for Clod is multiple espressif-based IoT devices throughou
 
 Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. First, they are descriptive and helpful to the user. Second, they get more specific and limiting as read from left to right. 
 
+**Note**: The user is free to not use location based paths by simply assigning the same path to each each device, like /default or /house. 
 
 
 #### Commands
 
-After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Everything to the left of the command is the `[path]`. The first item to the right of the `[command]` is the device `[name]`. The second item to the right of the `[command]` is the `[endpoint]`.
+After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the path, and everything to the right as the `[name]` and `[endpoint]`.
 
-A `[path]/control/[name]/[endpoint]` message tells the device to do something.
+A control command tells the device to do something. `[path]/control/[name]/[endpoint]`
 
-A `[path]/confirm/[name]/[endpoint]` message usually comes from the device and informs Clod that the control message has been carried out.
+A confirm command usually comes from the device and informs Clod that the control message has been carried out. `[path]/confirm/[name]/[endpoint]` 
 
 When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod.
 
-`[path]/log/[name]` currently does nothing, but is reserved for future use.
+The log command currently does nothing, but is reserved for future use. `[path]/log/[name]` 
 
 
 #### Names
