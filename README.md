@@ -48,7 +48,7 @@ The intended use for Clod is multiple espressif-based IoT devices throughout the
 
 Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. First, they are descriptive and helpful to the user. Second, they get more specific and limiting as read from left to right. 
 
-**Note**: The user is free to not use location based paths by simply assigning the same path to each each device, like /default or /house. 
+**Note**: The user is free to not use location based paths by simply assigning the same path to each each device, like `/default` or `/house`. 
 
 
 #### Commands
@@ -74,7 +74,7 @@ Device names are provided by the user during the upload process and/or hardcoded
 
 
 
-### Exceptions
+#### Exceptions
 
 
 
