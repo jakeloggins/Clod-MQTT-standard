@@ -55,18 +55,18 @@ Location based topics will be referred to throughout the documentation as ` [pat
 
 After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the path, and everything to the right as the `[name]` and `[endpoint]`.
 
-A control command tells the device to do something. `[path]/control/[name]/[endpoint]`
+* A control command tells the device to do something. `[path]/control/[name]/[endpoint]`
 
-A confirm command usually comes from the device and informs Clod that the control message has been carried out. `[path]/confirm/[name]/[endpoint]` 
+* A confirm command usually comes from the device and informs Clod that the control message has been carried out. `[path]/confirm/[name]/[endpoint]` 
 
-When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod.
+* When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod.
 
-The log command currently does nothing, but is reserved for future use. `[path]/log/[name]` 
+* The log command currently does nothing, but is reserved for future use. `[path]/log/[name]` 
 
 
 #### Names
 
-Device names
+Device names are provided by the user during the upload process and/or hardcoded into the sketch. Spaces in the name are allowed, but will be converted to [camelCase](https://en.wikipedia.org/wiki/CamelCase) and assigned to device_name_key in the device object. For more details on device objects, read the [walkthrough](https://github.com/jakeloggins/Clod-scripts).
 
 
 #### Endpoints
