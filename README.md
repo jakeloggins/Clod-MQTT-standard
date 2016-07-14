@@ -15,7 +15,7 @@ An MQTT standard is just a way to format topics so that users and devices can un
 * Can integrate seamlessly with third party services (slack chat, text message, twitter, etc)
 
 
-### Location based path rationale 
+### Location based topic rationale 
 
 The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
 
@@ -25,14 +25,16 @@ The intended use case for Clod is multiple espressif-based IoT devices throughou
 
 * A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parse whether a global command applies to it's location. Eventually, Clod scripts will allow you to send a message like ` /global/house/upstairs/control/lights "off" ` to turn off all the upstairs lights. 
 
-Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/largest/medium/smallest ` are both perfectly fine location paths. 
+Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. They are descriptive, and they get more specific and limiting as you read from left to right.
+
+
+### Commands, Name, and Endpoints
+
+After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Everything to the left of the command is the `[path]`, 
 
 
 
-### Commands
-
-
-### Scripts
+### Exceptions
 
 
 
