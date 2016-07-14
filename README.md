@@ -2,7 +2,7 @@
 Clod MQTT Standard
 ==================
 
-An MQTT standard is just a way to format topics so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. The Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
+An MQTT standard is just a way to format topics so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
 
 * Intutive when viewed in a continuous output stream
 
@@ -16,16 +16,15 @@ An MQTT standard is just a way to format topics so that users and devices can un
 
 
 
-
 ### Location based path rationale 
 
-A previous version of this dashboard used a much simpler path structure, with Inbox (for controlling) or Outbox (for confirming) always as the first element of the path. Apart from creative uses of device names and endpoints, there was no way for a user to specify a path. User-defined, location-based paths offer some advantages:
+The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
 
 * A more intuitive experience when viewing a raw stream of messages on the broker. The path tells you the location and the command describes what is happening. The output gets more detailed as you read from left to right.
 
 * The ability to easily view a subset of your network. For example, a subscription to /house/upstairs/# will show you everything that is going on within upstairs including devices at /upstairs/guestroom and upstairs/bathroom.
 
-* A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parase whether a global command applies to it's location.
+* A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parse whether a global command applies to it's location. Eventually, Clod scripts will allow you to send a message like ` /global/house/upstairs/control/lights "off" ` to turn off all the upstairs lights. 
 
 
 
