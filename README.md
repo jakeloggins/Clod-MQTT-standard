@@ -1,1 +1,163 @@
 # clod-MQTT-standard
+
+Connecting to Crouton
+--------------
+
+First, have Crouton and the device connected to the same MQTT Broker. The connection between the device and Crouton will be initiated from Crouton, therefore the device needs to subscribe to its own inbox.
+
+```
+Device should subscribe to the following:
+/deviceInfo/[the device name]/control
+```
+
+Every time the device successfully connects to the MQTT Broker, it should publish its *deviceInfo*. This is needed for auto-reconnection. If Crouton is waiting for the device to connect, it will listen for the *deviceInfo* when the device comes back online.
+
+```
+Device should publish deviceInfo JSON once connected
+/deviceInfo/[the device name]/confirm
+```
+
+### DeviceInfo
+
+The deviceInfo is the primary method for Crouton to understand the device. It is the first message the device will send to Crouton to establish connection and also the message that describes the device and values to Crouton. The primary object is *deviceInfo*. Within *deviceInfo* there are several keys as follows:
+
+```json
+{
+  "deviceInfo": {
+    "name": "Kroobar",
+    "path": "/bar/front/entrance",
+    "endPoints": {
+      "barDoor": {
+        "title": "Bar Main Door",
+        "card-type": "crouton-simple-text",
+        "units": "people entered",
+        "function": "counter",
+        "values": {
+            "value": 34
+        }
+      }
+    },
+    "description": "Kroobar's IOT devices",
+    "status": "good"
+  }
+}
+```
+
+* *name*: A string that is the name for the device. This is same name you would use to add the device
+* *path*: Specifies the location to publish and subscribe on the mqtt broker
+* *endPoints*: An object that configures each dashboard element Crouton will show. There can be more than one endPoint which would be key/object pairs within *endPoints*
+* *function*: A string within an endpoint that is used to group together endpoints for global commands
+* *description*: A string that describes the device (for display to user only)
+* *status*: A string that describes the status of the device (for display to user only)
+
+**Note**: Both *name* and *endPoints* are required and must be unique to other *names* or *endPoints* respectively
+
+**Note**: There is now an additional method for adding and altering single card devices, discussed below. If you have multiple cards and store the deviceInfo JSON in your script, simply select "Auto Import" and type in the device name to add to the dashboard.
+
+### Addresses
+
+Addresses are what Crouton and the device will publish and subscribe to. They are also critical in making the communication between Crouton and the devices accurate therefore there is a structure they should follow.
+
+```
+/[path]/[command type]/[device name]/[endPoint name]
+```
+
+*command type*: Helps the device and crouton understand the purpose of a message. Generally, *control* is for messages going *to* the device and *confirm* is for messages *from* the device. Last will and testament messages are sent to *errors*. A final command type, *log*, is reserved for future use.
+
+```
+control, confirm, errors, log
+```
+
+*path*: a custom prefix where all messages will be published. Using location names is recommended. Command type words may not be used within the path.
+
+```
+ex: /house/downstairs/kitchen
+```
+
+*device name*: The name of the device the are targeting; from *name* key/value pair of *deviceInfo*
+
+*endPoint name*: The name of the endPoint the are targeting; from the key used in the key/object pair in *endPoints*
+
+**Note**: All addresses must be unique to one MQTT Broker. Therefore issues could be encounter when using public brokers where there are naming conflicts.
+
+### Updating device values
+
+Updating device values can come from Crouton or the device. The message payload will be a JSON that updates the value. This JSON will be equivalent to the object of the key *values* within each endPoint. However, only values that are being updated needs to be updated. All other values must be updated by the deviceInfo JSON.
+
+```json
+Payload: {"value": 35}
+
+An entry in endPoints:
+"barDoor": {
+  "title": "Bar Main Door",
+  "card-type": "crouton-simple-text",
+  "units": "people entered",
+  "values": {
+      "value": 34
+  }
+}
+```
+
+##### From Crouton
+
+Crouton has the ability to update the value of the device's endPoints via certain dashboard cards. Therefore the device needs to be subscribe to certain addresses detailed in the Endpoints section below. The payload from Crouton is in the same format as the one coming from the device.
+
+```
+Address: /[path]/control/Kroobar/barDoor
+Payload: {"value": 35}
+```
+
+##### From Device
+
+To update values on Crouton from the device, simply publish messages to the outbox of the endPoint which Crouton is already subscribed to. The payload is just the same as the one coming from Crouton.
+
+```
+Address: /[path]/confirm/Kroobar/barDoor
+Payload: {"value": 35}
+```
+
+### Last will and testament (LWT)
+
+In order for Crouton to know when the device has unexpectedly disconnected, the device must create a LWT with the MQTT Broker. This a predefined broadcast that the broker will publish on the device's behalf when the device disconnects. The payload in this case can be anything as long as the address is correct.
+
+```
+Address: /[path]/errors/Kroobar
+Payload: anything
+```
+
+### Endpoints
+
+A device can have multiple endPoints. Each endPoint represents a dashboard card that will be displayed on the dashboard.
+
+The device must subscribe to the [path]/control of each endPoint which may receive values from Crouton. For example, a toggle switch on Crouton may change a value on the device therefore a subscription is necessary; however, an alert button which sends only messages from device to Crouton may not need a subscription because the device does not expect any values from Crouton.
+
+```
+Subscription address for endPoints on device:
+/[path]/control/[device name]/[endpoint name]
+```
+
+Upon receiving a new value from Crouton, the device **must** send back the new value or the appropriate value back to Crouton on [path]/confirm/[device name]/[endpoint name]. This is because Crouton will not reflect the new value change *unless* it is coming from the device.
+
+Therefore the value shown on Crouton more accurately reflects the value on the device.
+
+```
+Address: /[path]/confirm/[device name]/[endpoint name]
+Payload: {"value": "some new value here"}
+```
+
+Advanced Topics
+===================
+
+### Single card devices
+
+If your device only contains one card, like a toggle or counter display, you can reprogram elements of the JSON from within the dashboard. On the connections page, select your card type from the menu and enter the device name, card title, path, and other optional information. This is useful for quickly moving a switch to another room. Rather than reprogramming the device to reflect the new path, name and other information, you can quickly adjust it from within the dashboard.
+
+### Location based path rationale 
+
+A previous version of this dashboard used a much simpler path structure, with Inbox (for controlling) or Outbox (for confirming) always as the first element of the path. Apart from creative uses of device names and endpoints, there was no way for a user to specify a path. User-defined, location-based paths offer some advantages:
+
+* A more intuitive experience when viewing a raw stream of messages on the broker. The path tells you the location and the command describes what is happening. The output gets more detailed as you read from left to right.
+
+* The ability to easily view a subset of your network. For example, a subscription to /house/upstairs/# will show you everything that is going on within upstairs including devices at /upstairs/guestroom and upstairs/bathroom.
+
+* A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parase whether a global command applies to it's location.
