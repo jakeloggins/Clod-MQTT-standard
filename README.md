@@ -26,8 +26,11 @@ Examples:
 
 ```
 [location based path] > /house/upstairs/guestroom 
+
 [command] > /control
+
 [device name] > /myEspDevice
+
 [endpoint] > /temperature
 ```
 
@@ -36,8 +39,7 @@ All together, that would look like this:
 ` /house/upstairs/guestroom/control/myEspDevice/temperature `
 
 
-Location based path rationale
-------------------------------
+#### Location based path
 
 The intended use case for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
 
@@ -48,11 +50,6 @@ The intended use case for Clod is multiple espressif-based IoT devices throughou
 * A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parse whether a global command applies to it's location. Eventually, Clod scripts will allow you to send a message like ` /global/house/upstairs/control/lights "off" ` to turn off all the upstairs lights. 
 
 Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. First, they are descriptive and helpful to the user. Second, they get more specific and limiting as read from left to right. 
-
-
-Topic Format
-------------
-
 
 
 
@@ -80,6 +77,11 @@ Device names
 
 
 ### Exceptions
+
+
+
+
+
 
 
 
