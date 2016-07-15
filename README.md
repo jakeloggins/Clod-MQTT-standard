@@ -2,7 +2,11 @@
 Clod MQTT Standard
 ==================
 
-MQTT is a messaging protocol that is perfect for the Internet of Things. Messages are sent to topics, which is a string separated by forward slashes ` /just/like/this ` and contain payloads that can be a string ` "like this" ` or an object `{ "like": "this" }" `. An MQTT standard is just an agreed way to format the messages so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
+MQTT is a messaging protocol that is perfect for the Internet of Things. Messages are sent to topics, which is a string separated by forward slashes ` /just/like/this ` and contain payloads that can be a string ` "like this" ` or an object `{ "like": "this" }" `. A typical message would look something like this:
+
+` /this/is/the/topic "and this is the payload" `
+
+An MQTT standard is just an agreed way to format the messages so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
 
 * Intutive when viewed in a continuous output stream
 
