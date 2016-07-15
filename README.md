@@ -46,14 +46,14 @@ The intended use for Clod is multiple espressif-based IoT devices throughout the
 
 * A better foundation for the addition of global commands. In the python client examples, the placement of command in the middle of the path string allows the device to parse whether a global command applies to it's location. Eventually, Clod scripts will allow you to send a message like ` /global/house/upstairs/control/lights "off" ` to turn off all the upstairs lights. 
 
-Location based topics will be referred to throughout the documentation as ` [path] `. Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. First, they are descriptive and helpful to the user. Second, they get more specific and limiting as read from left to right. 
+Any number of user-defined combinations are allowed. For example, `/house/upstairs/ ` or ` /house/upstairs/guestroom/closet/storagebox/shoebox/russian-nesting-dolls/large/medium/small ` are both perfectly fine location paths. First, they are descriptive and helpful to the user. Second, they get more specific and limiting as read from left to right. 
 
 **Note**: The user is free to not use location based paths by simply assigning the same path to each each device, like `/default` or `/house`. 
 
 
-#### Commands
+#### Command
 
-After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the path, and everything to the right as the `[name]` and `[endpoint]`.
+After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the `[path]`, and everything to the right as the `[name]` and `[endpoint]`.
 
 * A control command tells the device to do something. `[path]/control/[name]/[endpoint]`
 
@@ -64,16 +64,16 @@ After the user-defined location path comes the `[command]`. There are four comma
 * The log command currently does nothing, but is reserved for future use. `[path]/log/[name]` 
 
 
-#### Names
+#### Name
 
-Device names are provided by the user during the upload process and/or hardcoded into the sketch. Spaces in the name are allowed, but will be converted to [camelCase](https://en.wikipedia.org/wiki/CamelCase) and assigned to device_name_key in the device object. For more details on device objects, read the [walkthrough](https://github.com/jakeloggins/Clod-scripts).
+Device names are provided by the user during the upload process and/or hardcoded into the sketch. Spaces in the name are allowed, but will be converted to [camelCase](https://en.wikipedia.org/wiki/CamelCase) and assigned to device_name_key in the device object. More information about device objects are provided below.
 
 
-#### Endpoints
+#### Endpoint
 
-A device can have multiple endpoints. Each endpoint represents a dashboard card that will be displayed on the dashboard.
+A device can have multiple endpoints. Each endpoint represents a dashboard card that will be displayed for the user to control or view data from the device.
 
-The device must subscribe to the [path]/control of each endpoint which may receive values from the user. For example, a toggle switch may change a value on the device therefore a subscription is necessary; however, an alert button which sends only messages from device to to the dashboard may not need a subscription because the device does not expect any values from the user.
+The device must subscribe to the `/[path]/control/[name][endpoint]` of each endpoint which may receive values from the user. For example, a toggle switch may change a value on the device therefore a subscription is necessary; however, an alert button which sends only messages from device to to the dashboard may not need a subscription because the device does not expect any values from the user.
 
 ```
 Subscription address for endPoints on device:
@@ -89,10 +89,10 @@ Payload: {"value": "some new value here"}
 ```
 
 
-
-
-
 #### Exceptions
+
+For simple, routine communications between the user and devices
+
 
 deviceInfo
 
@@ -105,6 +105,11 @@ scheduler
 
 For more information on each of these scripts, refer to the walkthrough.
 
+
+Intro to Device Objects
+-----------------------
+
+[walkthrough](https://github.com/jakeloggins/Clod-scripts)
 
 
 
