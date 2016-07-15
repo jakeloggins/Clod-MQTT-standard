@@ -40,7 +40,7 @@ All together, that would look like this:
 ` /house/upstairs/guestroom/control/myEspDevice/temperature `
 
 
-#### Location based path
+### Location based path
 
 The intended use for Clod is multiple espressif-based IoT devices throughout the home. If a user has only one device, any topic format will do. But with multiple devices, location based topic paths offer the following advantages:
 
@@ -55,7 +55,7 @@ Any number of user-defined combinations are allowed. For example, `/house/upstai
 **Note**: The user is free to not use location based paths by simply assigning the same path to each each device, like `/default` or `/house`. 
 
 
-#### Command
+### Command
 
 There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the `[path]`, and everything to the right as the `[name]` and `[endpoint]`.
 
@@ -68,12 +68,12 @@ There are four commands: control, confirm, errors, and log. Clod first uses the 
 * The log command currently does nothing, but is reserved for future use. `[path]/log/[name]` 
 
 
-#### Name
+### Name
 
 Device names are provided by the user during the upload process and/or hardcoded into the sketch. Spaces in the name are allowed, but will be converted to [camelCase](https://en.wikipedia.org/wiki/CamelCase) and assigned to device_name_key in the device object. More information about device objects are provided below.
 
 
-#### Endpoint
+### Endpoint
 
 A device can have multiple endpoints. Each endpoint represents a dashboard card that will be displayed for the user to control or view data from the device.
 
@@ -93,7 +93,7 @@ Payload: {"value": "some new value here"}
 ```
 
 
-#### Startup and Scripts
+### Startup and Scripts
 
 Most routine communication between the user and devices are covered by the proceeding sections. However, a device's initial connection and use of the Clod Scripts require special topic formatting. This section simply notes the topic syntax for these processes. For an in-depth look at how these work and what they do, read the [walkthrough](https://github.com/jakeloggins/Clod-scripts). 
 
