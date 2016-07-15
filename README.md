@@ -201,9 +201,9 @@ An entry in endPoints:
 }
 ```
 
-##### From Crouton
+##### From User
 
-Crouton has the ability to update the value of the device's endPoints via certain dashboard cards. Therefore the device needs to be subscribe to certain addresses detailed in the Endpoints section below. The payload from Crouton is in the same format as the one coming from the device.
+The user has the ability to update the value of the device's endpoints via certain dashboard cards. Therefore the device needs to be subscribe to all of its endpoint topics. The payload from the user is in the same format as the one coming from the device.
 
 ```
 Address: /[path]/control/Kroobar/barDoor
@@ -212,7 +212,7 @@ Payload: {"value": 35}
 
 ##### From Device
 
-To update values on Crouton from the device, simply publish messages to the outbox of the endPoint which Crouton is already subscribed to. The payload is just the same as the one coming from Crouton.
+To update values on the dashboard from the device, simply publish messages to the `confirm` of the endPoint which Crouton is already subscribed to. The payload is just the same as the one coming from Crouton.
 
 ```
 Address: /[path]/confirm/Kroobar/barDoor
