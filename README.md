@@ -103,7 +103,8 @@ Most routine communication between the user and devices are covered by the proce
  * init is used by esp chips when they have first connected to Clod but have not yet gone through the upload process. 
    * ` /init/[command]/[chipID] `
 
- * the persistence script maintains information about all devices within Clod and makes it available to other devices and scripts ` /persistence/[command]/name `
+ * the persistence script maintains information about all devices within Clod and makes it available to other devices and scripts 
+   * ` /persistence/[command]/name `
 
  * the uploader script allows a user to customize and upload a sketch from the [Clod Sketch Library](https://github.com/jakeloggins/Clod) to an esp chip. 
    * ` /uploader/[command]/name `
