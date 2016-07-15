@@ -59,7 +59,7 @@ After the user-defined location path comes the `[command]`. There are four comma
 
 * A confirm command usually comes from the device and informs Clod that the control message has been carried out. `[path]/confirm/[name]/[endpoint]` 
 
-* When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod.
+* When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod. 
 
 * The log command currently does nothing, but is reserved for future use. `[path]/log/[name]` 
 
@@ -71,11 +71,47 @@ Device names are provided by the user during the upload process and/or hardcoded
 
 #### Endpoints
 
+A device can have multiple endpoints. Each endpoint represents a dashboard card that will be displayed on the dashboard.
+
+The device must subscribe to the [path]/control of each endpoint which may receive values from the user. For example, a toggle switch may change a value on the device therefore a subscription is necessary; however, an alert button which sends only messages from device to to the dashboard may not need a subscription because the device does not expect any values from the user.
+
+```
+Subscription address for endPoints on device:
+/[path]/control/[name]/[endpoint name]
+```
+
+Upon receiving a new value from the user, the device **must** send back the new value or the appropriate value back to the dashboard on [path]/confirm/[name]/[endpoint]. This is because the dashboard will not reflect the new value change *unless* it is coming from the device.
+
+
+```
+Address: /[path]/confirm/[name]/[endpoint name]
+Payload: {"value": "some new value here"}
+```
+
+
 
 
 
 #### Exceptions
 
+deviceInfo
+
+persistence
+
+uploader
+
+scheduler
+
+
+For more information on each of these scripts, refer to the walkthrough.
+
+
+
+
+Payload Format
+--------------
+
+Because Clod evolved from the Crouton dashboard, the payload format must match one of the Crouton cards. 
 
 
 
@@ -206,22 +242,3 @@ Address: /[path]/errors/Kroobar
 Payload: anything
 ```
 
-### Endpoints
-
-A device can have multiple endPoints. Each endPoint represents a dashboard card that will be displayed on the dashboard.
-
-The device must subscribe to the [path]/control of each endPoint which may receive values from Crouton. For example, a toggle switch on Crouton may change a value on the device therefore a subscription is necessary; however, an alert button which sends only messages from device to Crouton may not need a subscription because the device does not expect any values from Crouton.
-
-```
-Subscription address for endPoints on device:
-/[path]/control/[device name]/[endpoint name]
-```
-
-Upon receiving a new value from Crouton, the device **must** send back the new value or the appropriate value back to Crouton on [path]/confirm/[device name]/[endpoint name]. This is because Crouton will not reflect the new value change *unless* it is coming from the device.
-
-Therefore the value shown on Crouton more accurately reflects the value on the device.
-
-```
-Address: /[path]/confirm/[device name]/[endpoint name]
-Payload: {"value": "some new value here"}
-```
