@@ -114,15 +114,71 @@ Most routine communication between the user and devices are covered by the proce
 
 
 
-Intro to Device Objects
------------------------
-
-[walkthrough](https://github.com/jakeloggins/Clod-scripts)
-
-
-
 Payload Format
 --------------
+
+### Device Objects
+
+All of a device's information that is required by Clod can be found in its device object. For more information on how the device object changes during a device's life cycle, see the [walkthrough](https://github.com/jakeloggins/Clod-scripts). The device object is sent to `/deviceInfo/` whenever a user adds a device to the Crouton dashboard, a new sketch is uploaded, or after loss of connection to the MQTT broker. The device object is the primary method for Crouton to understand the device. It is the first message the device will send to Crouton to establish connection and also the message that describes the device and values to Crouton. 
+
+Device object example:
+
+```
+{
+  "deviceInfo": {
+    "current_ip": "192.168.1.141",
+    "type": "esp",
+    "espInfo": {
+        "chipID": "16019999",
+        "board_type": "esp01_1m",
+        "platform": "espressif",
+        "flash_size": 1048576,
+        "real_size": 1048576,
+        "boot_version": 4,
+        "upload_sketch": "basic_esp8266",
+    },
+    "device_name": "Floodlight Monitor",
+    "device_name_key": "floodlightMonitor",
+    "device_status": "good",
+    "path": "/backyard/floodlight/",
+    "card_display_choice": "custom",
+    "endPoints": {
+      "lastTimeTriggered": {
+        "title": "Last Time Triggered",
+        "card-type": "crouton-simple-input",
+        "static_endpoint_id": "time_input",
+        "values": {
+          "value": "n/a"
+        }
+      },
+      "alertEmail": {
+        "title": "Alert Email",
+        "card-type": "crouton-simple-input",
+        "static_endpoint_id": "alert_input",
+        "values": {
+          "value": "your_email_address@gmail.com"
+        }
+      }
+    }
+  } 
+}
+```
+
+* *device_name*: A string that is the name for the device. This is same name you would use to add the device
+* *device_name_key: A camelized version of the device_name
+* *path*: Specifies the location based topic path
+* *endPoints*: An object that configures each dashboard element Crouton will show. There can be more than one endPoint which would be key/object pairs within *endPoints*
+* *function*: A string within an endpoint that is used to group together endpoints for global commands and schedules
+* *description*: A string that describes the device (for display to user only)
+* *device_status*: A string that describes the status of the device (for display to user only)
+* *espInfo*: information about the esp chip
+* *type*: currently, only esp chips can use the uploader, which is specified here
+
+**Note**: Both *device_name* and *endPoints* are required and must be unique to other *device_names* or *endPoints* respectively
+
+
+
+
 
 Because Clod evolved from the Crouton dashboard, the payload format must match one of the Crouton cards. 
 
@@ -147,42 +203,6 @@ Device should publish deviceInfo JSON once connected
 /deviceInfo/confirm/[the device name]/
 ```
 
-### DeviceInfo
-
-The deviceInfo is the primary method for Crouton to understand the device. It is the first message the device will send to Crouton to establish connection and also the message that describes the device and values to Crouton. The primary object is *deviceInfo*. Within *deviceInfo* there are several keys as follows:
-
-```json
-{
-  "deviceInfo": {
-    "name": "Kroobar",
-    "path": "/bar/front/entrance",
-    "endPoints": {
-      "barDoor": {
-        "title": "Bar Main Door",
-        "card-type": "crouton-simple-text",
-        "units": "people entered",
-        "function": "counter",
-        "values": {
-            "value": 34
-        }
-      }
-    },
-    "description": "Kroobar's IOT devices",
-    "status": "good"
-  }
-}
-```
-
-* *name*: A string that is the name for the device. This is same name you would use to add the device
-* *path*: Specifies the location to publish and subscribe on the mqtt broker
-* *endPoints*: An object that configures each dashboard element Crouton will show. There can be more than one endPoint which would be key/object pairs within *endPoints*
-* *function*: A string within an endpoint that is used to group together endpoints for global commands
-* *description*: A string that describes the device (for display to user only)
-* *status*: A string that describes the status of the device (for display to user only)
-
-**Note**: Both *name* and *endPoints* are required and must be unique to other *names* or *endPoints* respectively
-
-**Note**: There is now an additional method for adding and altering single card devices, discussed below. If you have multiple cards and store the deviceInfo JSON in your script, simply select "Auto Import" and type in the device name to add to the dashboard.
 
 ### Addresses
 
