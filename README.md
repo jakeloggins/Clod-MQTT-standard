@@ -164,15 +164,15 @@ Device object example:
 }
 ```
 
-* *device_name*: A string that is the name for the device. This is same name you would use to add the device
-* *device_name_key: A camelized version of the device_name
-* *path*: Specifies the location based topic path
-* *endPoints*: An object that configures each dashboard element Crouton will show. There can be more than one endPoint which would be key/object pairs within *endPoints*
-* *function*: A string within an endpoint that is used to group together endpoints for global commands and schedules
-* *description*: A string that describes the device (for display to user only)
-* *device_status*: A string that describes the status of the device (for display to user only)
-* *espInfo*: information about the esp chip
 * *type*: currently, only esp chips can use the uploader, which is specified here
+* *espInfo*: information about the esp chip. required by the uploader
+* *device_name*: A string that is the name for the device. This is same name you would use to add the device
+* *device_name_key*: A camelized version of the device_name
+* *device_status*: A string that describes the status of the device
+* *path*: Specifies the location based topic path
+* *card_display_choice*: notes whether the user chose to specify custom endpoints during the upload process
+* *endPoints*: An object that configures each dashboard element Crouton will show. There can be more than one endPoint which would be key/object pairs within *endPoints*
+* *description*: A string that describes the device (for display to user only)
 
 **Note**: Both *device_name* and *endPoints* are required and must be unique to other *device_names* or *endPoints* respectively
 
