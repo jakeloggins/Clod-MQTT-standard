@@ -97,15 +97,19 @@ Payload: {"value": "some new value here"}
 
 Most routine communication between the user and devices are covered by the proceeding sections. However, a device's initial connection and use of the Clod Scripts require special topic formatting. This section simply notes the topic syntax for these processes. For an in-depth look at how these work and what they do, read the [walkthrough](https://github.com/jakeloggins/Clod-scripts). 
 
- * deviceInfo is where information about the device is exchanged between the user, devices, and Clod. ` /deviceInfo/[command]/[name] `
+ * deviceInfo is where information about the device is exchanged between the user, devices, and Clod. 
+   * ` /deviceInfo/[command]/[name] `
 
- * init is used by esp chips when they have first connected to Clod but have not yet gone through the upload process. ` /init/[command]/[chipID] `
+ * init is used by esp chips when they have first connected to Clod but have not yet gone through the upload process. 
+   * ` /init/[command]/[chipID] `
 
  * the persistence script maintains information about all devices within Clod and makes it available to other devices and scripts ` /persistence/[command]/name `
 
- * the uploader script allows a user to customize and upload a sketch from the [Clod Sketch Library](https://github.com/jakeloggins/Clod) to an esp chip. ` /uploader/[command]/name `
+ * the uploader script allows a user to customize and upload a sketch from the [Clod Sketch Library](https://github.com/jakeloggins/Clod) to an esp chip. 
+   * ` /uploader/[command]/name `
 
- * the scheduler sends normal control commands to endpoints at specified times. ` /scheduler/[path]/[action type]/[name]/[endpoint]/[value] ` (Again, see the [walkthrough](https://github.com/jakeloggins/Clod-scripts#action-types-and-values) for more details)
+ * the scheduler sends normal control commands to endpoints at specified times. 
+   * ` /scheduler/[path]/[action type]/[name]/[endpoint]/[value] ` (Again, see the [walkthrough](https://github.com/jakeloggins/Clod-scripts#action-types-and-values) for more details)
 
 
 
