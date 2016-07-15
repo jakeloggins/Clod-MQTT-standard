@@ -164,75 +164,37 @@ Device object example:
 }
 ```
 
-* *type*: currently, only esp chips can use the uploader, which is specified here
-* *espInfo*: information about the esp chip. required by the uploader
-* *device_name*: A string that is the name for the device. This is same name you would use to add the device
-* *device_name_key*: A camelized version of the device_name
-* *device_status*: A string that describes the status of the device
-* *path*: Specifies the location based topic path
-* *card_display_choice*: notes whether the user chose to specify custom endpoints during the upload process
+* *type*: Specifies whether the device is an esp chip. Required by the uploader.
+* *espInfo*: Information about the esp chip. Required by the uploader.
+* *device_name*: A string that is the name for the device.
+* *device_name_key*: A camelized version of the device_name so that the MQTT topic will not include a space.
+* *device_status*: A string that describes the status of the device.
+* *path*: Specifies the location based topic path.
+* *card_display_choice*: Notes whether the user chose to specify custom endpoints during the upload process.
 * *endPoints*: An object that configures each dashboard element Crouton will show. There can be more than one endPoint which would be key/object pairs within *endPoints*
+* *card-type*: How data should be displayed from the endpoint on the dashboard. See next section.
 * *description*: A string that describes the device (for display to user only)
 
 **Note**: Both *device_name* and *endPoints* are required and must be unique to other *device_names* or *endPoints* respectively
 
 
+### Card Types
+
+Since Clod evolved from the Crouton dashboard, each endpoint must follow a Crouton card's payload format. For a full description of the available dashboard cards, go [here](https://github.com/jakeloggins/crouton-new#dashboard-cards). Most cards require sending a `values` object containing a single `value` key to the endpoint's topic. Some cards, such as the [Line Chart](https://github.com/jakeloggins/crouton-new#line-chart), have a more complicated `values` object.
+
+
+### Updating Endpoints
 
 
 
-Because Clod evolved from the Crouton dashboard, the payload format must match one of the Crouton cards. 
 
 
 
 
-
-
-
-
-First, have Crouton and the device connected to the same MQTT Broker. The connection between the device and Crouton will be initiated from Crouton, therefore the device needs to subscribe to its own inbox.
-
-```
-Device should subscribe to the following:
-/deviceInfo/control/[the device name]
-```
-
-Every time the device successfully connects to the MQTT Broker, it should publish its *deviceInfo*. This is needed for auto-reconnection. If Crouton is waiting for the device to connect, it will listen for the *deviceInfo* when the device comes back online.
-
-```
-Device should publish deviceInfo JSON once connected
-/deviceInfo/confirm/[the device name]/
-```
-
-
-### Addresses
-
-Addresses are what Crouton and the device will publish and subscribe to. They are also critical in making the communication between Crouton and the devices accurate therefore there is a structure they should follow.
-
-```
-/[path]/[command type]/[device name]/[endPoint name]
-```
-
-*command type*: Helps the device and crouton understand the purpose of a message. Generally, *control* is for messages going *to* the device and *confirm* is for messages *from* the device. Last will and testament messages are sent to *errors*. A final command type, *log*, is reserved for future use.
-
-```
-control, confirm, errors, log
-```
-
-*path*: a custom prefix where all messages will be published. Using location names is recommended. Command type words may not be used within the path.
-
-```
-ex: /house/downstairs/kitchen
-```
-
-*device name*: The name of the device the are targeting; from *name* key/value pair of *deviceInfo*
-
-*endPoint name*: The name of the endPoint the are targeting; from the key used in the key/object pair in *endPoints*
-
-**Note**: All addresses must be unique to one MQTT Broker. Therefore issues could be encounter when using public brokers where there are naming conflicts.
 
 ### Updating device values
 
-Updating device values can come from Crouton or the device. The message payload will be a JSON that updates the value. This JSON will be equivalent to the object of the key *values* within each endPoint. However, only values that are being updated needs to be updated. All other values must be updated by the deviceInfo JSON.
+Updates to endpoints can come from user or the device. The message payload will be a JSON that updates the value. This JSON will be equivalent to the object of the key `values` within each endpoint. 
 
 ```json
 Payload: {"value": 35}
