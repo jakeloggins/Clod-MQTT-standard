@@ -6,7 +6,9 @@ MQTT is a messaging protocol that is perfect for the Internet of Things. Message
 
 ` /this/is/the/topic "and this is the payload" `
 
-An MQTT standard is just an agreed way to format the messages so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
+A device will receive the payload only if it is **subscribed** to `/this/is/the/topic `. 
+
+An MQTT standard is just an agreed way to format the topic and payload so that users and devices can easily understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
 
 * Intutive when viewed in a continuous output stream
 
