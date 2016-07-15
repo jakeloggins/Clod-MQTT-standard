@@ -123,7 +123,7 @@ All of a device's information that is required by Clod can be found in its devic
 
 Device object example:
 
-```
+```json
 {
   "deviceInfo": {
     "current_ip": "192.168.1.141",
@@ -185,16 +185,7 @@ Since Clod evolved from the Crouton dashboard, each endpoint must follow a Crout
 
 ### Updating Endpoints
 
-
-
-
-
-
-
-
-### Updating device values
-
-Updates to endpoints can come from user or the device. The message payload will be a JSON that updates the value. This JSON will be equivalent to the object of the key `values` within each endpoint. 
+Updates to endpoints can come from user or the device. The message payload will be a object that updates the value. This object will be equivalent to the object of the key `values` within each endpoint. 
 
 ```json
 Payload: {"value": 35}
