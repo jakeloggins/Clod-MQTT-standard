@@ -2,7 +2,7 @@
 Clod MQTT Standard
 ==================
 
-An MQTT standard is just a way to format topics so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
+MQTT is a messaging protocol that is perfect for the Internet of Things. Messages are sent to topics, which is a string separated by forward slashes ` /just/like/this ` and contain payloads that can be a string ` "like this" ` or an object `{ "like": "this" }" `. An MQTT standard is just an agreed way to format the messages so that users and devices can understand each other. Development around IoT, and espressif chips in particular, is constantly changing. Since Clod is a disorganized mess of other great open source software projects, the Clod MQTT Standard is designed to display information intuitively for users and allow multiple languages to understand it.
 
 * Intutive when viewed in a continuous output stream
 
@@ -53,11 +53,11 @@ Any number of user-defined combinations are allowed. For example, `/house/upstai
 
 #### Command
 
-After the user-defined location path comes the `[command]`. There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the `[path]`, and everything to the right as the `[name]` and `[endpoint]`.
+There are four commands: control, confirm, errors, and log. Clod first uses the command to parse the topic. Once Clod recognizes the command, it reads everything to the left of it as part of the `[path]`, and everything to the right as the `[name]` and `[endpoint]`.
 
 * A control command tells the device to do something. `[path]/control/[name]/[endpoint]`
 
-* A confirm command usually comes from the device and informs Clod that the control message has been carried out. `[path]/confirm/[name]/[endpoint]` 
+* A confirm command informs Clod that the control message has been executed or updates Clod with new data. `[path]/confirm/[name]/[endpoint]` 
 
 * When a device loses power or is disconnected from the MQTT broker, it sends a message to `[path]/errors/[name]/` to notify Clod. 
 
@@ -89,21 +89,20 @@ Payload: {"value": "some new value here"}
 ```
 
 
-#### Exceptions
+#### Startup and Scripts
 
-For simple, routine communications between the user and devices
+Most routine communication between the user and devices are covered by the proceeding sections. However, a device's initial connection and use of the Clod Scripts require special topic formatting. This section simply notes the topic syntax for these processes. For an in-depth look at how these work and what they do, read the [walkthrough](https://github.com/jakeloggins/Clod-scripts). 
 
+ * deviceInfo is where information about the device is exchanged between the user, devices, and Clod. ` /deviceInfo/[command]/[name] `
 
-deviceInfo
+ * init is used by esp chips when they have first connected to Clod but have not yet gone through the upload process. ` /init/[command]/[chipID] `
 
-persistence
+ * the persistence script maintains information about all devices within Clod and makes it available to other devices and scripts ` /persistence/[command]/name `
 
-uploader
+ * the uploader script allows a user to customize and upload a sketch from the [Clod Sketch Library](https://github.com/jakeloggins/Clod) to an esp chip. ` /uploader/[command]/name `
 
-scheduler
+ * the scheduler sends normal control commands to endpoints at specified times. ` /scheduler/[path]/[action type]/[name]/[endpoint]/[value] ` (Again, see the [walkthrough](https://github.com/jakeloggins/Clod-scripts#action-types-and-values) for more details)
 
-
-For more information on each of these scripts, refer to the walkthrough.
 
 
 Intro to Device Objects
