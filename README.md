@@ -219,8 +219,7 @@ Address: /[path]/confirm/Kroobar/barDoor
 Payload: {"value": 35}
 ```
 
-Last will and testament (LWT)
------------------------------
+### Last will and testament (LWT)
 
 In order for Crouton to know when the device has unexpectedly disconnected, the device must create a LWT with the MQTT Broker. This a predefined broadcast that the broker will publish on the device's behalf when the device disconnects. The payload in this case can be anything as long as the address is correct.
 
